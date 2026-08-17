@@ -19,7 +19,7 @@ const Profile = () => {
     }
     
     // Fetch profile
-    fetch('${API_URL}/api/users/profile', {
+    fetch(`${API_URL}/api/users/profile`, {
       headers: { Authorization: `Bearer ${user.token}` }
     })
     .then(res => res.json())
@@ -34,7 +34,7 @@ const Profile = () => {
     e.preventDefault();
     setStatus('saving');
     try {
-      const response = await fetch('${API_URL}/api/users/profile', {
+      const response = await fetch(`${API_URL}/api/users/profile`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

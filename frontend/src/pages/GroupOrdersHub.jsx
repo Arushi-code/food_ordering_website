@@ -11,7 +11,7 @@ export default function GroupOrdersHub() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('${API_URL}/api/restaurants')
+    fetch(`${API_URL}/api/restaurants`)
       .then(res => res.json())
       .then(data => {
         setRestaurants(data);
@@ -29,7 +29,7 @@ export default function GroupOrdersHub() {
       return;
     }
     try {
-      const res = await fetch('${API_URL}/api/group-cart/start', {
+      const res = await fetch(`${API_URL}/api/group-cart/start`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

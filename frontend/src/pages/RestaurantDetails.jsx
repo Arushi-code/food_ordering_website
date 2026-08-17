@@ -27,7 +27,7 @@ export default function RestaurantDetails() {
       });
 
     if (user) {
-      fetch('${API_URL}/api/users/profile', {
+      fetch(`${API_URL}/api/users/profile`, {
         headers: { Authorization: `Bearer ${user.token}` }
       })
       .then(res => res.json())
@@ -65,7 +65,7 @@ export default function RestaurantDetails() {
       return;
     }
     try {
-      const res = await fetch('${API_URL}/api/group-cart/start', {
+      const res = await fetch(`${API_URL}/api/group-cart/start`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

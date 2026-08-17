@@ -18,8 +18,8 @@ const Favorites = () => {
     }
 
     Promise.all([
-      fetch('${API_URL}/api/restaurants').then(res => res.json()),
-      fetch('${API_URL}/api/users/profile', {
+      fetch(`${API_URL}/api/restaurants`).then(res => res.json()),
+      fetch(`${API_URL}/api/users/profile`, {
         headers: { Authorization: `Bearer ${user.token}` }
       }).then(res => res.json())
     ])

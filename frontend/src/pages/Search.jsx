@@ -11,7 +11,7 @@ const Search = () => {
   const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
-    fetch('${API_URL}/api/restaurants')
+    fetch(`${API_URL}/api/restaurants`)
       .then(res => res.json())
       .then(data => {
         setRestaurants(data);

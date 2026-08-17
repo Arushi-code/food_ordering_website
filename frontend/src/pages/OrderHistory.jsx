@@ -16,7 +16,7 @@ const OrderHistory = () => {
       return;
     }
 
-    fetch('${API_URL}/api/orders/myorders', {
+    fetch(`${API_URL}/api/orders/myorders`, {
       headers: { Authorization: `Bearer ${user.token}` }
     })
     .then(res => res.json())

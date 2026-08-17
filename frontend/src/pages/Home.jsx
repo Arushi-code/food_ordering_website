@@ -15,7 +15,7 @@ export default function Home() {
   const [favoriteIds, setFavoriteIds] = useState([]);
 
   useEffect(() => {
-    fetch('${API_URL}/api/restaurants')
+    fetch(`${API_URL}/api/restaurants`)
       .then(res => res.json())
       .then(data => {
         setRestaurants(data);
@@ -26,13 +26,13 @@ export default function Home() {
         setLoading(false);
       });
 
-    fetch('${API_URL}/api/restaurants/deals/surprise-bags')
+    fetch(`${API_URL}/api/restaurants/deals/surprise-bags`)
       .then(res => res.json())
       .then(data => setDeals(data))
       .catch(console.error);
 
     if (user) {
-      fetch('${API_URL}/api/users/profile', {
+      fetch(`${API_URL}/api/users/profile`, {
         headers: { Authorization: `Bearer ${user.token}` }
       })
       .then(res => res.json())

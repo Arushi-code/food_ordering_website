@@ -35,7 +35,7 @@ const AdminDashboard = () => {
     }
 
     // Fetch Orders
-    fetch('${API_URL}/api/orders', {
+    fetch(`${API_URL}/api/orders`, {
       headers: { Authorization: `Bearer ${user.token}` }
     })
     .then(res => {
@@ -52,7 +52,7 @@ const AdminDashboard = () => {
     });
 
     // Fetch Restaurants
-    fetch('${API_URL}/api/restaurants')
+    fetch(`${API_URL}/api/restaurants`)
     .then(res => res.json())
     .then(data => {
       setRestaurants(data);
@@ -94,7 +94,7 @@ const AdminDashboard = () => {
         menu: []
       };
       
-      const res = await fetch('${API_URL}/api/restaurants', {
+      const res = await fetch(`${API_URL}/api/restaurants`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
