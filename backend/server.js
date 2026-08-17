@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const path = require('path');
 
 const Restaurant = require('./models/Restaurant');
 const Order = require('./models/Order');
@@ -503,6 +504,14 @@ app.post('/api/group-cart/:id/add', async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Failed to add item' });
   }
+});
+
+// Serve static frontend files in production
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// Catch-all route to serve the React app for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
 app.listen(PORT, () => {
