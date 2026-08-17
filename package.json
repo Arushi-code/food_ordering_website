@@ -1,0 +1,9 @@
+{
+  "name": "food-ordering",
+  "version": "1.0.0",
+  "description": "Fullstack food ordering app",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm start --prefix backend"
+  }
+}
