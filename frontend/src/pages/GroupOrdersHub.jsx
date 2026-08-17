@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function GroupOrdersHub() {
   const [restaurants, setRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +11,7 @@ export default function GroupOrdersHub() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/restaurants')
+    fetch('${API_URL}/api/restaurants')
       .then(res => res.json())
       .then(data => {
         setRestaurants(data);
@@ -27,7 +29,7 @@ export default function GroupOrdersHub() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/group-cart/start', {
+      const res = await fetch('${API_URL}/api/group-cart/start', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

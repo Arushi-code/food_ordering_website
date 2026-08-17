@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Favorites = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -16,8 +18,8 @@ const Favorites = () => {
     }
 
     Promise.all([
-      fetch('http://localhost:5000/api/restaurants').then(res => res.json()),
-      fetch('http://localhost:5000/api/users/profile', {
+      fetch('${API_URL}/api/restaurants').then(res => res.json()),
+      fetch('${API_URL}/api/users/profile', {
         headers: { Authorization: `Bearer ${user.token}` }
       }).then(res => res.json())
     ])

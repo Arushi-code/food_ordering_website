@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const AdminDashboard = () => {
     }
 
     // Fetch Orders
-    fetch('http://localhost:5000/api/orders', {
+    fetch('${API_URL}/api/orders', {
       headers: { Authorization: `Bearer ${user.token}` }
     })
     .then(res => {
@@ -50,7 +52,7 @@ const AdminDashboard = () => {
     });
 
     // Fetch Restaurants
-    fetch('http://localhost:5000/api/restaurants')
+    fetch('${API_URL}/api/restaurants')
     .then(res => res.json())
     .then(data => {
       setRestaurants(data);
@@ -62,7 +64,7 @@ const AdminDashboard = () => {
   // Orders functions
   const updateStatus = async (id, newStatus) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/orders/${id}/status`, {
+      const res = await fetch(`${API_URL}/api/orders/${id}/status`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -92,7 +94,7 @@ const AdminDashboard = () => {
         menu: []
       };
       
-      const res = await fetch('http://localhost:5000/api/restaurants', {
+      const res = await fetch('${API_URL}/api/restaurants', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -116,7 +118,7 @@ const AdminDashboard = () => {
   const handleDeleteRestaurant = async (id) => {
     if (!window.confirm('Are you sure you want to delete this restaurant?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/restaurants/${id}`, {
+      const res = await fetch(`${API_URL}/api/restaurants/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${user.token}` }
       });

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const OrderTracking = () => {
   const { id } = useParams();
   const { user } = useAuth();
@@ -16,7 +18,7 @@ const OrderTracking = () => {
     }
 
     const fetchOrder = () => {
-      fetch(`http://localhost:5000/api/orders/${id}`, {
+      fetch(`${API_URL}/api/orders/${id}`, {
         headers: { Authorization: `Bearer ${user.token}` }
       })
       .then(res => res.json())

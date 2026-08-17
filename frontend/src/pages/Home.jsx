@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
   const [deals, setDeals] = useState([]);
@@ -13,7 +15,7 @@ export default function Home() {
   const [favoriteIds, setFavoriteIds] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/restaurants')
+    fetch('${API_URL}/api/restaurants')
       .then(res => res.json())
       .then(data => {
         setRestaurants(data);
@@ -24,13 +26,13 @@ export default function Home() {
         setLoading(false);
       });
 
-    fetch('http://localhost:5000/api/restaurants/deals/surprise-bags')
+    fetch('${API_URL}/api/restaurants/deals/surprise-bags')
       .then(res => res.json())
       .then(data => setDeals(data))
       .catch(console.error);
 
     if (user) {
-      fetch('http://localhost:5000/api/users/profile', {
+      fetch('${API_URL}/api/users/profile', {
         headers: { Authorization: `Bearer ${user.token}` }
       })
       .then(res => res.json())
@@ -51,7 +53,7 @@ export default function Home() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/users/favorites/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/favorites/${id}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${user.token}` }
       });

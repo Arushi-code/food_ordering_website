@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart, removeFromCart } = useCart();
   const { user } = useAuth();
@@ -28,7 +29,7 @@ const Checkout = () => {
         quantity: item.quantity
       }));
 
-      const response = await fetch('http://localhost:5000/api/orders', {
+      const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

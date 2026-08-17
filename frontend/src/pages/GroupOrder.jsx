@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function GroupOrder() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ export default function GroupOrder() {
   }, [id]);
 
   const fetchSession = () => {
-    fetch(`http://localhost:5000/api/group-cart/${id}`)
+    fetch(`${API_URL}/api/group-cart/${id}`)
       .then(res => res.json())
       .then(data => {
         setSession(data);
@@ -44,7 +45,7 @@ export default function GroupOrder() {
   const addItem = async (item) => {
     const nameToUse = user ? user.name : guestName;
     try {
-      const res = await fetch(`http://localhost:5000/api/group-cart/${id}/add`, {
+      const res = await fetch(`${API_URL}/api/group-cart/${id}/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: nameToUse, item: { ...item, quantity: 1 } })

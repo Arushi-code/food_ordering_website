@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function RestaurantDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -13,7 +15,7 @@ export default function RestaurantDetails() {
   const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/restaurants/${id}`)
+    fetch(`${API_URL}/api/restaurants/${id}`)
       .then(res => res.json())
       .then(data => {
         setRestaurant(data);
@@ -25,7 +27,7 @@ export default function RestaurantDetails() {
       });
 
     if (user) {
-      fetch('http://localhost:5000/api/users/profile', {
+      fetch('${API_URL}/api/users/profile', {
         headers: { Authorization: `Bearer ${user.token}` }
       })
       .then(res => res.json())
@@ -45,7 +47,7 @@ export default function RestaurantDetails() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/users/favorites/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/favorites/${id}`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
@@ -63,7 +65,7 @@ export default function RestaurantDetails() {
       return;
     }
     try {
-      const res = await fetch('http://localhost:5000/api/group-cart/start', {
+      const res = await fetch('${API_URL}/api/group-cart/start', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Profile = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const Profile = () => {
     }
     
     // Fetch profile
-    fetch('http://localhost:5000/api/users/profile', {
+    fetch('${API_URL}/api/users/profile', {
       headers: { Authorization: `Bearer ${user.token}` }
     })
     .then(res => res.json())
@@ -32,7 +34,7 @@ const Profile = () => {
     e.preventDefault();
     setStatus('saving');
     try {
-      const response = await fetch('http://localhost:5000/api/users/profile', {
+      const response = await fetch('${API_URL}/api/users/profile', {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

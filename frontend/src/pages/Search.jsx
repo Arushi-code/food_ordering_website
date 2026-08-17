@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Search = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
@@ -9,7 +11,7 @@ const Search = () => {
   const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/restaurants')
+    fetch('${API_URL}/api/restaurants')
       .then(res => res.json())
       .then(data => {
         setRestaurants(data);

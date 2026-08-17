@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+
 export default function Offers() {
   const [claimed, setClaimed] = useState(false);
 

@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const OrderHistory = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ const OrderHistory = () => {
       return;
     }
 
-    fetch('http://localhost:5000/api/orders/myorders', {
+    fetch('${API_URL}/api/orders/myorders', {
       headers: { Authorization: `Bearer ${user.token}` }
     })
     .then(res => res.json())
