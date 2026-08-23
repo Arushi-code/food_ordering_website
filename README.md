@@ -6,6 +6,12 @@ The application also includes an **admin dashboard** for managing restaurants an
 
 ---
 
+## 🌐  Live project link
+https://feasto-h2st.onrender.com
+
+---
+
+
 ## 🌟 Features
 
 ### 👤 User Authentication
