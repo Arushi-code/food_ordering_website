@@ -102,7 +102,7 @@ export default function Home() {
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
         >
           {/* Load local video from public folder properly for production */}
-          <source src="/videos.mp4" type="video/mp4" />
+          <source src="/videos.mp4?v=2" type="video/mp4" />
         </video>
         
         {/* Dark overlay for text readability */}
