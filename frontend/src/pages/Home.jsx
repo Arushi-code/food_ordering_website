@@ -99,68 +99,70 @@ export default function Home() {
           loop 
           muted 
           playsInline
-          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: -2 }}
+          style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
         >
-          {/* Using a highly reliable, free high-res food stock video */}
-          <source src="https://player.vimeo.com/external/371946892.sd.mp4?s=d94db81d50c18d8e578eb04a79dfc82df62ec0b7&profile_id=164&oauth2_token_id=57447761" type="video/mp4" />
+          {/* Using a highly reliable stock video preview */}
+          <source src="https://ak.picdn.net/shutterstock/videos/1027178306/preview/stock-footage-friends-having-dinner-at-a-restaurant-and-making-a-toast.mp4" type="video/mp4" />
         </video>
         
         {/* Dark overlay for text readability */}
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.65)', zIndex: -1 }}></div>
+        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.65)', zIndex: 2 }}></div>
 
-        <motion.h1 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{ 
-            color: '#ffffff', 
-            fontSize: 'clamp(2.5rem, 5vw, 4rem)', 
-            marginBottom: '1.5rem', 
-            textShadow: '0 4px 10px rgba(0,0,0,0.5)',
-            background: 'none',
-            WebkitTextFillColor: '#ffffff'
-          }}
-        >
-          Delicious Food,<br/>Delivered Fast
-        </motion.h1>
-
-        <motion.p 
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          style={{ 
-            color: '#e2e8f0', 
-            fontSize: '1.25rem', 
-            maxWidth: '600px', 
-            marginBottom: '2.5rem', 
-            textShadow: '0 2px 5px rgba(0,0,0,0.5)' 
-          }}
-        >
-          Experience the best restaurants in your city, delivered straight to your door with real-time tracking and exclusive offers.
-        </motion.p>
-
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          style={{ width: '100%', maxWidth: '500px' }}
-        >
-          <input 
-            type="text" 
-            placeholder="Search for restaurants, cuisines, or tags..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+        <div style={{ position: 'relative', zIndex: 3, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             style={{ 
-              width: '100%', 
-              padding: '1.2rem 1.5rem', 
-              borderRadius: 'var(--radius-pill)', 
-              border: 'none',
-              fontSize: '1.1rem',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
-              outline: 'none'
-            }} 
-          />
-        </motion.div>
+              color: '#ffffff', 
+              fontSize: 'clamp(2.5rem, 5vw, 4rem)', 
+              marginBottom: '1.5rem', 
+              textShadow: '0 4px 10px rgba(0,0,0,0.5)',
+              background: 'none',
+              WebkitTextFillColor: '#ffffff'
+            }}
+          >
+            Delicious Food,<br/>Delivered Fast
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            style={{ 
+              color: '#e2e8f0', 
+              fontSize: '1.25rem', 
+              maxWidth: '600px', 
+              marginBottom: '2.5rem', 
+              textShadow: '0 2px 5px rgba(0,0,0,0.5)' 
+            }}
+          >
+            Experience the best restaurants in your city, delivered straight to your door with real-time tracking and exclusive offers.
+          </motion.p>
+
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            style={{ width: '100%', maxWidth: '500px' }}
+          >
+            <input 
+              type="text" 
+              placeholder="Search for restaurants, cuisines, or tags..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ 
+                width: '100%', 
+                padding: '1.2rem 1.5rem', 
+                borderRadius: 'var(--radius-pill)', 
+                border: 'none',
+                fontSize: '1.1rem',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+                outline: 'none'
+              }} 
+            />
+          </motion.div>
+        </div>
       </section>
 
       <section className="container" style={{ paddingBottom: '3rem' }}>
