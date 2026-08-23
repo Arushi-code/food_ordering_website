@@ -19,6 +19,29 @@
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+.dark {
+  --background: #121212;
+  --surface: #1e1e1e;
+  --surface-light: #2c2c2c;
+  --text-main: #f8f9fa;
+  --text-muted: #a0a0a0;
+  
+  --shadow-glow: 0 0 20px rgba(255, 71, 87, 0.4);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-light) 25%, rgba(150, 150, 150, 0.1) 50%, var(--surface-light) 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -72,10 +95,11 @@ a {
   padding: 1.5rem 0;
   position: sticky;
   top: 0;
-  background: rgba(255, 255, 255, 0.8);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 100;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(150, 150, 150, 0.1);
 }
 
 .logo {

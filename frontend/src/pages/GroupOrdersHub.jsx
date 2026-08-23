@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -37,7 +39,7 @@ export default function GroupOrdersHub() {
 
   const startGroupOrder = async (restaurantId) => {
     if (!user) {
-      alert("Please sign in to start a group order");
+      toast.error("Please sign in to start a group order");
       return;
     }
     try {
@@ -51,25 +53,33 @@ export default function GroupOrdersHub() {
       });
       if (res.ok) {
         const data = await res.json();
+        toast.success("Group order started!");
         navigate(`/group-order/${data._id}`);
       } else {
         const err = await res.json();
-        alert(err.message || 'Failed to start group order');
+        toast.error(err.message || 'Failed to start group order');
       }
     } catch (err) {
       console.error(err);
+      toast.error("Server error");
     }
   };
 
   return (
-    <main className="container" style={{ padding: '2rem 1rem' }}>
+    <motion.main 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="container" 
+      style={{ padding: '2rem 1rem' }}
+    >
       
       {user && myGroupCarts.length > 0 && (
         <div style={{ marginBottom: '4rem' }}>
           <h2 style={{ marginBottom: '1.5rem' }}>My Group Orders</h2>
           <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
             {myGroupCarts.map(cart => (
-              <div key={cart._id} className="card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <motion.div whileHover={{ y: -5 }} key={cart._id} className="card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div>
                   <h3 style={{ margin: '0 0 0.25rem' }}>{cart.restaurantId?.name || 'Restaurant'}</h3>
                   <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
@@ -97,7 +107,7 @@ export default function GroupOrdersHub() {
                     {cart.status === 'locked' ? 'View Receipt' : 'Open Cart'}
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -109,11 +119,22 @@ export default function GroupOrdersHub() {
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center' }}>Loading restaurants...</div>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+          {[1,2,3,4,5,6].map(n => (
+             <div key={n} className="card skeleton" style={{ height: '320px', border: 'none' }}></div>
+          ))}
+        </div>
       ) : (
         <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
-          {restaurants.map(restaurant => (
-            <div key={restaurant._id} className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+          {restaurants.map((restaurant, index) => (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              key={restaurant._id} 
+              className="card" 
+              style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+            >
               <img src={restaurant.image} alt={restaurant.name} style={{ width: '100%', height: '160px', objectFit: 'cover' }} />
               <div className="card-body" style={{ padding: '1rem' }}>
                 <h3 style={{ margin: '0 0 0.5rem' }}>{restaurant.name}</h3>
@@ -131,10 +152,10 @@ export default function GroupOrdersHub() {
                   Start Group Order
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}
-    </main>
+    </motion.main>
   );
 }

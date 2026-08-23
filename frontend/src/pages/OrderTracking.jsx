@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Clock, ChefHat, Truck, PackageCheck } from 'lucide-react';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
@@ -43,6 +44,13 @@ const OrderTracking = () => {
 
   const statuses = ['pending', 'preparing', 'out_for_delivery', 'delivered'];
   const currentIndex = statuses.indexOf(order.status);
+  
+  const icons = [
+    <Clock size={16} color={currentIndex >= 0 ? '#fff' : 'var(--text-muted)'} />,
+    <ChefHat size={16} color={currentIndex >= 1 ? '#fff' : 'var(--text-muted)'} />,
+    <Truck size={16} color={currentIndex >= 2 ? '#fff' : 'var(--text-muted)'} />,
+    <PackageCheck size={16} color={currentIndex >= 3 ? '#fff' : 'var(--text-muted)'} />
+  ];
 
   return (
     <div className="container" style={{ padding: '2rem 1rem', maxWidth: '800px', margin: '0 auto' }}>
@@ -50,9 +58,9 @@ const OrderTracking = () => {
       <p style={{ color: 'var(--text-muted)' }}>Order ID: {order._id}</p>
 
       <div style={{ margin: '3rem 0', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '4px', background: '#eee', zIndex: 1, transform: 'translateY(-50%)' }}></div>
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '4px', background: 'var(--surface-light)', zIndex: 1, transform: 'translateY(-50%)' }}></div>
         <div style={{ 
-          position: 'absolute', top: '50%', left: 0, height: '4px', background: 'var(--primary-color)', zIndex: 1, transform: 'translateY(-50%)',
+          position: 'absolute', top: '50%', left: 0, height: '4px', background: 'var(--primary)', zIndex: 1, transform: 'translateY(-50%)',
           width: `${(currentIndex / (statuses.length - 1)) * 100}%`,
           transition: 'width 0.5s ease'
         }}></div>
@@ -61,11 +69,14 @@ const OrderTracking = () => {
           {statuses.map((s, idx) => (
             <div key={s} style={{ textAlign: 'center' }}>
               <div style={{ 
-                width: '30px', height: '30px', borderRadius: '50%', background: idx <= currentIndex ? 'var(--primary-color)' : '#fff', 
-                border: `3px solid ${idx <= currentIndex ? 'var(--primary-color)' : '#eee'}`,
-                margin: '0 auto', transition: 'all 0.5s ease'
-              }}></div>
-              <p style={{ marginTop: '0.5rem', fontWeight: idx <= currentIndex ? 'bold' : 'normal', color: idx <= currentIndex ? '#333' : '#999', fontSize: '0.875rem' }}>
+                width: '40px', height: '40px', borderRadius: '50%', background: idx <= currentIndex ? 'var(--primary)' : 'var(--surface)', 
+                border: `3px solid ${idx <= currentIndex ? 'var(--primary)' : 'var(--surface-light)'}`,
+                margin: '0 auto', transition: 'all 0.5s ease',
+                display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}>
+                {icons[idx]}
+              </div>
+              <p style={{ marginTop: '0.5rem', fontWeight: idx <= currentIndex ? 'bold' : 'normal', color: idx <= currentIndex ? 'var(--text-main)' : 'var(--text-muted)', fontSize: '0.875rem' }}>
                 {s.replace('_', ' ').toUpperCase()}
               </p>
             </div>

@@ -16,6 +16,8 @@ import Search from './pages/Search';
 import AdminDashboard from './pages/AdminDashboard';
 import GroupOrder from './pages/GroupOrder';
 import GroupOrdersHub from './pages/GroupOrdersHub';
+import { Toaster } from 'react-hot-toast';
+import { ShoppingBag } from 'lucide-react';
 import './index.css';
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
 
   return (
     <Router>
+      <Toaster position="top-center" />
       <Navbar />
 
       {/* Cart Sidebar */}
@@ -37,7 +40,11 @@ function App() {
         
         <div className="cart-content">
           {cartItems.length === 0 ? (
-            <p className="empty-cart">Your cart is empty. Add some delicious food!</p>
+            <div className="empty-cart" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '4rem' }}>
+              <ShoppingBag size={64} style={{ color: 'var(--text-muted)', opacity: 0.5 }} />
+              <p>Your cart is empty.</p>
+              <button className="btn btn-primary" onClick={toggleCart} style={{ marginTop: '1rem' }}>Browse Restaurants</button>
+            </div>
           ) : (
             <div className="cart-items">
               {cartItems.map((item, idx) => (

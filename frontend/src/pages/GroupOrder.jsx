@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 export default function GroupOrder() {
@@ -53,9 +55,10 @@ export default function GroupOrder() {
       if (res.ok) {
         const data = await res.json();
         setSession(data);
+        toast.success(`Added ${item.name}`);
       } else {
         const errData = await res.json();
-        alert(errData.message || 'Failed to add item');
+        toast.error(errData.message || 'Failed to add item');
       }
     } catch (err) {
       console.error(err);
@@ -63,7 +66,7 @@ export default function GroupOrder() {
   };
 
   const handleCheckout = async () => {
-    if (!user) return alert("You must be logged in to checkout.");
+    if (!user) return toast.error("You must be logged in to checkout.");
     try {
       const res = await fetch(`${API_URL}/api/group-cart/${id}/checkout`, {
         method: 'POST',
@@ -74,19 +77,24 @@ export default function GroupOrder() {
       });
       
       if (res.ok) {
-        alert("Group Order Checked Out successfully!");
+        toast.success("Group Order Checked Out successfully!");
         navigate('/orders');
       } else {
         const errData = await res.json();
-        alert(errData.message || 'Failed to checkout');
+        toast.error(errData.message || 'Failed to checkout');
       }
     } catch (err) {
       console.error(err);
-      alert('Error connecting to server');
+      toast.error('Error connecting to server');
     }
   };
 
-  if (loading) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Loading Group Cart...</div>;
+  if (loading) return (
+    <div className="container grid" style={{ padding: '4rem 1rem', gridTemplateColumns: '1fr 350px', gap: '2rem' }}>
+      <div className="skeleton" style={{ height: '500px' }}></div>
+      <div className="skeleton" style={{ height: '400px' }}></div>
+    </div>
+  );
   if (!session || !session.restaurantId) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Session Not Found</div>;
 
   const currentUserName = user ? user.name : guestName;
@@ -100,7 +108,12 @@ export default function GroupOrder() {
   }
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem' }}>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="container" 
+      style={{ padding: '2rem 1rem' }}
+    >
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <h1 style={{ marginBottom: '0.5rem' }}>Group Order: {session.restaurantId.name}</h1>
         <p style={{ color: 'var(--text-muted)' }}>Hosted by {session.hostName}</p>
@@ -220,6 +233,6 @@ export default function GroupOrder() {
 
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
