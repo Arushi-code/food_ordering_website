@@ -102,7 +102,7 @@ export default function Home() {
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
         >
           {/* Using a high-quality free stock video of a delicious burger */}
-          <source src="path/to/your/videos.mp4" type="video/mp4" />
+          <source src="public/videos.mp4" type="video/mp4" />
         </video>
         
         {/* Dark overlay for text readability */}
