@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-const API_URL = import.meta.env.VITE_API_URL || '';
+
 
 const Checkout = () => {
   const { cartItems, cartTotal, clearCart, removeFromCart } = useCart();
@@ -29,7 +29,7 @@ const Checkout = () => {
         quantity: item.quantity
       }));
 
-      const response = await fetch(`${API_URL}/api/orders`, {
+      const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
