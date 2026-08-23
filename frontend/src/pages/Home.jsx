@@ -101,8 +101,8 @@ export default function Home() {
           playsInline
           style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
         >
-          {/* Using a highly reliable stock video preview */}
-          <source src="https://ak.picdn.net/shutterstock/videos/1027178306/preview/stock-footage-friends-having-dinner-at-a-restaurant-and-making-a-toast.mp4" type="video/mp4" />
+          {/* Using a high-quality free stock video of a delicious burger */}
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-hamburger-with-a-lot-of-cheese-and-meat-31713-large.mp4" type="video/mp4" />
         </video>
         
         {/* Dark overlay for text readability */}
