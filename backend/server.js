@@ -475,6 +475,20 @@ app.post('/api/group-cart/start', protect, async (req, res) => {
   }
 });
 
+app.get('/api/group-cart/my', protect, async (req, res) => {
+  try {
+    const carts = await GroupCart.find({
+      $or: [
+        { hostUserId: req.user._id },
+        { 'members.name': req.user.name } // Matches if user is a guest but has same name, or we can use userId but currently the frontend might only push name for guests.
+      ]
+    }).populate('restaurantId').sort({ createdAt: -1 });
+    res.json(carts);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch your group carts' });
+  }
+});
+
 app.get('/api/group-cart/:id', async (req, res) => {
   try {
     const session = await GroupCart.findById(req.params.id).populate('restaurantId');
@@ -503,6 +517,67 @@ app.post('/api/group-cart/:id/add', async (req, res) => {
     res.json(session);
   } catch (err) {
     res.status(500).json({ error: 'Failed to add item' });
+  }
+});
+
+app.post('/api/group-cart/:id/checkout', protect, async (req, res) => {
+  try {
+    const cart = await GroupCart.findById(req.params.id);
+    if (!cart) return res.status(404).json({ message: 'Session not found' });
+    
+    if (cart.hostUserId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Only the host can lock and checkout the group order' });
+    }
+    if (cart.status === 'locked') {
+      return res.status(400).json({ message: 'Group order is already locked and checked out' });
+    }
+
+    cart.status = 'locked';
+    await cart.save();
+
+    // Aggregate items
+    const allItems = [];
+    let totalAmount = 0;
+    cart.members.forEach(member => {
+      member.items.forEach(item => {
+        allItems.push({
+          menuItemId: item.menuItemId,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity
+        });
+        totalAmount += item.price * item.quantity;
+      });
+    });
+
+    if (allItems.length === 0) {
+      return res.status(400).json({ message: 'Cannot checkout an empty group cart' });
+    }
+
+    // Create a real Order
+    const newOrder = new Order({
+      user: req.user._id,
+      items: allItems,
+      totalAmount
+    });
+    await newOrder.save();
+
+    // Simulate order progress
+    setTimeout(async () => {
+      await Order.findByIdAndUpdate(newOrder._id, { status: 'preparing' });
+    }, 15000); // 15 seconds
+
+    setTimeout(async () => {
+      await Order.findByIdAndUpdate(newOrder._id, { status: 'out_for_delivery' });
+    }, 30000); // 30 seconds
+
+    setTimeout(async () => {
+      await Order.findByIdAndUpdate(newOrder._id, { status: 'delivered' });
+    }, 45000); // 45 seconds
+
+    res.json({ message: 'Checkout successful', orderId: newOrder._id });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to checkout group cart' });
   }
 });
 

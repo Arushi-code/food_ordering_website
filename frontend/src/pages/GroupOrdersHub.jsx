@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 export default function GroupOrdersHub() {
   const [restaurants, setRestaurants] = useState([]);
+  const [myGroupCarts, setMyGroupCarts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Fetch restaurants
     fetch(`${API_URL}/api/restaurants`)
       .then(res => res.json())
       .then(data => {
@@ -21,7 +23,17 @@ export default function GroupOrdersHub() {
         console.error(err);
         setLoading(false);
       });
-  }, []);
+
+    // Fetch user's group carts if logged in
+    if (user) {
+      fetch(`${API_URL}/api/group-cart/my`, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+        .then(res => res.json())
+        .then(data => setMyGroupCarts(data))
+        .catch(console.error);
+    }
+  }, [user]);
 
   const startGroupOrder = async (restaurantId) => {
     if (!user) {
@@ -51,6 +63,46 @@ export default function GroupOrdersHub() {
 
   return (
     <main className="container" style={{ padding: '2rem 1rem' }}>
+      
+      {user && myGroupCarts.length > 0 && (
+        <div style={{ marginBottom: '4rem' }}>
+          <h2 style={{ marginBottom: '1.5rem' }}>My Group Orders</h2>
+          <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+            {myGroupCarts.map(cart => (
+              <div key={cart._id} className="card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div>
+                  <h3 style={{ margin: '0 0 0.25rem' }}>{cart.restaurantId?.name || 'Restaurant'}</h3>
+                  <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                    Hosted by {cart.hostName} • {new Date(cart.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+                
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ 
+                    padding: '0.25rem 0.5rem', 
+                    borderRadius: '4px', 
+                    fontSize: '0.8rem', 
+                    fontWeight: 'bold',
+                    backgroundColor: cart.status === 'locked' ? '#e2e8f0' : '#dcfce7',
+                    color: cart.status === 'locked' ? '#475569' : '#166534'
+                  }}>
+                    {cart.status.toUpperCase()}
+                  </span>
+                  
+                  <Link 
+                    to={`/group-order/${cart._id}`} 
+                    className={cart.status === 'locked' ? "btn btn-outline" : "btn btn-primary"}
+                    style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}
+                  >
+                    {cart.status === 'locked' ? 'View Receipt' : 'Open Cart'}
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
         <h1 style={{ marginBottom: '0.5rem' }}>Start a Group Order</h1>
         <p style={{ color: 'var(--text-muted)' }}>Choose a restaurant below, invite your friends, and order together!</p>

@@ -62,10 +62,28 @@ export default function GroupOrder() {
     }
   };
 
-  const handleCheckout = () => {
-    // In a real app, this would convert the GroupCart to a real Order
-    alert("Group Order Locked & Checked out! Total will be split.");
-    navigate('/');
+  const handleCheckout = async () => {
+    if (!user) return alert("You must be logged in to checkout.");
+    try {
+      const res = await fetch(`${API_URL}/api/group-cart/${id}/checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${user.token}`
+        }
+      });
+      
+      if (res.ok) {
+        alert("Group Order Checked Out successfully!");
+        navigate('/orders');
+      } else {
+        const errData = await res.json();
+        alert(errData.message || 'Failed to checkout');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to server');
+    }
   };
 
   if (loading) return <div className="container" style={{ padding: '4rem', textAlign: 'center' }}>Loading Group Cart...</div>;
