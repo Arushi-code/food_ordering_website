@@ -95,8 +95,8 @@ a {
   padding: 1.5rem 0;
   position: sticky;
   top: 0;
-
-  background: color-mix(in srgb, var(--surface) 100%, transparent);
+  width: 100%;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 100;
